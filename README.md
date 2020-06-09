@@ -23,7 +23,7 @@ This is yet a work in progress. Documentation is comming!
 
 ## Latest version
 
-The latest version of `spark-hugefs` is `0.1`, soon available from [Maven Central](http://repo1.maven.org/maven2/com/github/salva/spark/hugefs).
+The latest version of `spark-hugefs` is `0.1`, soon to be available from [Maven Central](http://repo1.maven.org/maven2/com/github/salva/spark/hugefs).
 
 ```scala
 libraryDependencies += "com.github.salva.spark-hugefs" %% "spark-hugefs" % "0.1"
