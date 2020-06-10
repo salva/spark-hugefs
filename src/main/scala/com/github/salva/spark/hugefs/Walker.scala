@@ -4,7 +4,6 @@ import java.io.IOException
 
 import com.github.salva.spark.hugefs.fs.impl.Native
 import com.github.salva.spark.hugefs.fs.{Entry, FS}
-import com.github.salva.spark.hugefs.restriction.Good
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 
 class Walker(val sparkSession:SparkSession, val fs:FS=Native) {

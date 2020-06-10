@@ -4,7 +4,6 @@ import java.io.IOException
 
 import com.github.salva.spark.hugefs.fs.{Entry, FS}
 import com.github.salva.spark.hugefs.fs.impl.Native
-import com.github.salva.spark.hugefs.restriction.Good
 
 class LocalWalker(val fs:FS=Native) extends Serializable {
 

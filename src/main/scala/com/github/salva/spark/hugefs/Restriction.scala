@@ -23,7 +23,7 @@ trait Restriction extends Serializable {
   }
 
   def &&(other:Restriction) = {
-    if (this == com.github.salva.spark.hugefs.restriction.Good) other
+    if (this == Good) other
     else new com.github.salva.spark.hugefs.restriction.And(this, other)
   }
   def ||(other:Restriction) = new com.github.salva.spark.hugefs.restriction.Or(this, other)
