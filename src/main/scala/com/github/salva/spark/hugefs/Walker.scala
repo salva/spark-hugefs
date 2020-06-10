@@ -6,15 +6,16 @@ import com.github.salva.spark.hugefs.fs.impl.Native
 import com.github.salva.spark.hugefs.fs.{Entry, FS}
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 
-class Walker(val sparkSession:SparkSession, val fs:FS=Native) {
+class Walker(val spark:SparkSession, val fs:FS=Native) {
   def walk(base:String, restriction:Restriction=Good, ignoreErrors:Boolean=true): DataFrame = {
-    import sparkSession.implicits._
-    val initDS = sparkSession.createDataset(Seq(""))
-    Walker.expand(fs, base, initDS, restriction, ignoreErrors).toDF("path").cache
+    import spark.implicits._
+    val initDS = spark.createDataset(Seq(""))
+    val cleanBase = fs.cleanBase(base)
+    Walker.expand(fs, cleanBase, initDS, restriction, ignoreErrors).toDF("path").cache
   }
 }
 
-object Walker extends Serializable {
+object Walker extends Serializable with WalkerHelper {
 
   case class PathAndVerdict(path: String, good: Boolean, live: Boolean)
 
@@ -49,4 +50,11 @@ object Walker extends Serializable {
     if (live.isEmpty) good
     else good.union(expand(fs, base, live.repartition(100), restriction, ignoreErrors))
   }
+
+  def walk(spark:SparkSession, fullBase:String, restriction:Restriction=Good) = {
+    val (fs, base) = breakFullBase(fullBase)
+    val walker = new Walker(spark)
+    walker.walk(base, restriction)
+  }
+
 }
