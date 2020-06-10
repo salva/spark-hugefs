@@ -1,25 +1,44 @@
 name := "spark-hugefs"
 
-version := "0.2-SNAPSHOT"
+logLevel := Level.Debug
+
+version := "0.5"
 
 scalaVersion := "2.11.12"
 
 sparkComponents += "sql"
-
-//sparkVersion := "3.0.0-preview2"
 sparkVersion := "2.4.5"
 
 libraryDependencies += "com.databricks" %% "dbutils-api" % "0.0.4"
 
-//githubOwner := "salva"
-//githubRepository := "spark-hugefs"
-
 organization := "com.github.salva"
-licenses := Seq("APL2" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
+organizationHomepage := Some(url("https://github.com/salva"))
+
+scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/salva/spark-hugefs"),
+    "https://github.com/salva/spark-hugefs.git"
+  )
+)
+
+developers := List (
+  Developer(
+    id = "salva",
+    name = "Salvador Fandiño",
+    email = "sfandino@yahoo.com",
+    url = url("https://github.com/salva")
+  )
+)
+
 description := "Walk big and deep filesystem fast and efficiently from Spark"
+licenses := Seq("APL2" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt"))
+homepage := Some(url("https://github.com/salva/spark-hugefs"))
 
-import xerial.sbt.Sonatype._
-sonatypeProjectHosting := Some(GitHubHosting("salva", "spark-hugefs", "sfandino@yahoo.com"))
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
+  else Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
 
-publishTo := sonatypePublishTo.value
-
+publishMavenStyle := true
+//sonatypeProjectHosting := Some(GitHubHosting("salva", "spark-hugefs", "sfandino@yahoo.com"))
