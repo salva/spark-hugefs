@@ -10,8 +10,7 @@ class Walker(val sparkSession:SparkSession, val fs:FS=Native) {
   def walk(base:String, restriction:Restriction=Good, ignoreErrors:Boolean=true): DataFrame = {
     import sparkSession.implicits._
     val initDS = sparkSession.createDataset(Seq(""))
-
-    Walker.expand(fs, base, initDS, restriction, ignoreErrors).toDF("path")
+    Walker.expand(fs, base, initDS, restriction, ignoreErrors).toDF("path").cache
   }
 }
 
