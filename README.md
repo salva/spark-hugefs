@@ -12,14 +12,38 @@ parallelization infrastructure.
 ```scala
 import com.github.salva.spark.hugefs._
 
-val w = new Walker(spark)
-val df = w.walk("/dbfs/mnt/fs1", Good.isFile.glob("**/images/*.jpg"))
+val df = Walker.walk("/dbfs/mnt/fs1", Good.isFile.glob("**/images/*.jpg"), spark)
 println("%s JPEG images found in directory", df.count)
 ```
 
 ## Documentation
 
-This is yet a work in progress. Documentation is comming!
+This package uses three main abstractions:
+
+* Walkers: The classes that can walk the file system and retrieve its structure
+using different strategies.
+
+Currently, two walker classes are available:
+
+  * Walker: walks the file system using the Spark engine, distributing the
+  process over all the available nodes.
+  
+  * LocalWalker: walks the file system using only the local thread.
+
+* Restrictions: A family of classes that allow one to prune the search space
+limiting the file system walk to those directories or files that comply with
+the declared restrictions.
+
+For instance, it is possible to pick files by its type (regular file,
+directory, symbolic link), extension, filename, globing patterns, etc.   
+
+* File systems: The classes that implement the low level access to the
+filesystem. Currently, backends are available for the Databricks file
+system (DBFS), and the Java native one.
+
+Probably only users interested in adding support for additional file systems
+should be concerned with these classes. Needless to say that contributions
+in this area are very welcome!
 
 ## Latest version
 
