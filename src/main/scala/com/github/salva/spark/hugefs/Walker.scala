@@ -5,13 +5,14 @@ import java.io.IOException
 import com.github.salva.spark.hugefs.fs.impl.Native
 import com.github.salva.spark.hugefs.fs.{Entry, FS}
 import com.github.salva.spark.hugefs.restriction.Good
-import org.apache.spark.SparkContext
-import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 
-class Walker(val sparkContext:SparkContext, val fs:FS=Native) {
-  def walk(base:String, restriction:Restriction=Good, ignoreErrors:Boolean=true): RDD[String] = {
-    val initRDD = sparkContext.parallelize(Seq(""))
-    Walker.expand(fs, base, initRDD, restriction, ignoreErrors)
+class Walker(val sparkSession:SparkSession, val fs:FS=Native) {
+  def walk(base:String, restriction:Restriction=Good, ignoreErrors:Boolean=true): DataFrame = {
+    import sparkSession.implicits._
+    val initDS = sparkSession.createDataset(Seq(""))
+
+    Walker.expand(fs, base, initDS, restriction, ignoreErrors).toDF("path")
   }
 }
 
@@ -42,7 +43,8 @@ object Walker extends Serializable {
     }
   }
 
-  def expand(fs:FS, base:String, paths:RDD[String], restriction:Restriction, ignoreErrors:Boolean):RDD[String] = {
+  def expand(fs:FS, base:String, paths:Dataset[String], restriction:Restriction, ignoreErrors:Boolean):Dataset[String] = {
+    import paths.sparkSession.implicits._
     val nextLevel = paths.flatMap(path => expandPath(fs, base, path, restriction, ignoreErrors))
     val good = nextLevel.filter(_.good).map(_.path)
     val live = nextLevel.filter(_.live).map(_.path)
