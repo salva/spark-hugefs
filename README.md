@@ -10,9 +10,9 @@ parallelization infrastructure.
 ## Example
 
 ```scala
-import com.github.salva.spark.hugefs.Walker
+import com.github.salva.spark.hugefs._
 
-val w = Walker(spark.sparkContext)
+val w = new Walker(spark)
 val df = w.walk("/dbfs/mnt/fs1", Good.isFile.glob("**/images/*.jpg"))
 println("%s JPEG images found in directory", df.count)
 ```
