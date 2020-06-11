@@ -10,6 +10,8 @@ sparkComponents += "sql"
 sparkVersion := "2.4.5"
 
 libraryDependencies += "com.databricks" %% "dbutils-api" % "0.0.4"
+libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
+
 
 organization := "com.github.salva"
 organizationHomepage := Some(url("https://github.com/salva"))
