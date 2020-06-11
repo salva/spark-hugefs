@@ -56,7 +56,7 @@ object Walker extends Serializable with WalkerHelper {
 
   def expand(fs:FS, base:String, paths:Dataset[String], restriction:Restriction, ignoreErrors:Boolean):Dataset[String] = {
     import paths.sparkSession.implicits._
-    val nextLevel = paths.flatMap(path => expandPath(fs, base, path, restriction, ignoreErrors))
+    val nextLevel = paths.flatMap(path => expandPath(fs, base, path, restriction, ignoreErrors)).cache
     val good = nextLevel.filter(_.good).map(_.path)
     val live = nextLevel.filter(_.live).map(_.path)
     if (live.isEmpty) good
