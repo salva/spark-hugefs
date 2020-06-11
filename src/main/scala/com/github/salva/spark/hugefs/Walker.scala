@@ -4,9 +4,9 @@ import java.io.IOException
 
 import com.github.salva.spark.hugefs.fs.impl.Native
 import com.github.salva.spark.hugefs.fs.{Entry, FS}
-import com.typesafe.scalalogging.LazyLogging
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 
+import org.slf4j.LoggerFactory
 class Walker(val spark:SparkSession, val fs:FS=Native) {
   def walk(base:String, restriction:Restriction=Good, ignoreErrors:Boolean=true): DataFrame = {
     import spark.implicits._
@@ -16,7 +16,9 @@ class Walker(val spark:SparkSession, val fs:FS=Native) {
   }
 }
 
-object Walker extends Serializable with WalkerHelper with LazyLogging {
+object Walker extends Serializable with WalkerHelper {
+
+  lazy val logger = LoggerFactory.getLogger("com.github.salva.spark.hugefs")
 
   case class PathAndVerdict(path: String, good: Boolean, live: Boolean)
 
@@ -28,7 +30,7 @@ object Walker extends Serializable with WalkerHelper with LazyLogging {
     catch {
       case e:IOException => {
         if (ignoreErrors) {
-          logger.warn(s"Ignoring IO error for ${entry.path}: ${e.getMessage}")
+          logger.warn(s"Ignoring IO error: ${e.getMessage}")
           PathAndVerdict(entry.path, false, false)
         }
         else throw e
@@ -44,7 +46,7 @@ object Walker extends Serializable with WalkerHelper with LazyLogging {
     catch {
       case e:IOException => {
         if (ignoreErrors) {
-          logger.warn(s"Ignoring IO error for ${entry.path}: ${e.getMessage}")
+          logger.warn(s"Ignoring IO error: ${e.getMessage}")
           Nil
         }
         else throw e
