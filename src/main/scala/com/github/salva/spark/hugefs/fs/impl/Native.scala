@@ -21,12 +21,18 @@ object Native extends FS {
 
     override def ls: Seq[Entry] = {
       try {
-        Files.newDirectoryStream(absPath)
-          .iterator
-          .asScala
-          .map(makeChild(_))
-          .toList // we convert to a list here in order
-                  // to catch iterator exceptions
+        val stream = Files.newDirectoryStream(absPath)
+        try {
+          stream
+            .iterator
+            .asScala
+            .map(makeChild(_))
+            .toList // we convert to a list here in order
+          // to catch iterator exceptions
+        }
+        finally {
+          stream.close()
+        }
       }
       catch {
         case e:DirectoryIteratorException => throw new IOException(e)
