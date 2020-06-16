@@ -2,7 +2,7 @@ name := "spark-hugefs"
 
 // logLevel := Level.Debug
 
-version := "0.6-SNAPSHOT"
+version := "0.7-SNAPSHOT"
 
 scalaVersion := "2.11.12"
 
@@ -10,8 +10,7 @@ sparkComponents += "sql"
 sparkVersion := "2.4.5"
 
 libraryDependencies += "com.databricks" %% "dbutils-api" % "0.0.4"
-// libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
-
+libraryDependencies += "com.github.salva" %% "scala-glob" % "0.0.3"
 
 organization := "com.github.salva"
 organizationHomepage := Some(url("https://github.com/salva"))

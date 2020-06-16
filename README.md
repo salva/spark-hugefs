@@ -1,4 +1,4 @@
-## spark-hugefs
+# spark-hugefs
 
 Spark is commonly used with remote file systems that are relatively
 slow, specially for operations related to walking the file structure.
