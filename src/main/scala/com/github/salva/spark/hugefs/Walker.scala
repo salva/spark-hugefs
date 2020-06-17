@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory
 
 import scala.language.implicitConversions
 
-class Walker(val spark:SparkSession, val fs:FS=Native) {
+class Walker(val spark:SparkSession, val fs:FS=Native, val partitions:Int=30) {
   def walk(base:String, restriction:Restriction=Good, ignoreErrors:Boolean=true): DataFrame = {
     import spark.implicits._
     val initDS = spark.createDataset(Seq(""))
     val cleanBase = fs.cleanBase(base)
-    Walker.expand(fs, cleanBase, initDS, restriction, ignoreErrors).toDF("path").cache
+    Walker.expand(fs, cleanBase, initDS, restriction, ignoreErrors, partitions).toDF("path").cache
   }
 }
 
@@ -57,13 +57,14 @@ object Walker extends Serializable {
     }
   }
 
-  def expand(fs:FS, base:String, paths:Dataset[String], restriction:Restriction, ignoreErrors:Boolean):Dataset[String] = {
+  def expand(fs:FS, base:String, paths:Dataset[String], restriction:Restriction,
+             ignoreErrors:Boolean, partitions:Int):Dataset[String] = {
     import paths.sparkSession.implicits._
     val nextLevel = paths.flatMap(path => expandPath(fs, base, path, restriction, ignoreErrors)).cache
     val good = nextLevel.filter(_.good).map(_.path)
     val live = nextLevel.filter(_.live).map(_.path)
     if (live.isEmpty) good
-    else good.union(expand(fs, base, live.repartition(100), restriction, ignoreErrors))
+    else good.union(expand(fs, base, live.repartition(partitions), restriction, ignoreErrors, partitions))
   }
 
   implicit def fromDbfsUtilsToFS(fs:DbfsUtils):FS = new DBFS(fs)
