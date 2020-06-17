@@ -2,8 +2,8 @@ package com.github.salva.spark.hugefs
 
 import java.io.IOException
 
-import com.github.salva.spark.hugefs.fs.{Entry, FS}
-import com.github.salva.spark.hugefs.fs.impl.Native
+import com.github.salva.spark.hugefs.fs.Native
+import com.github.salva.spark.hugefs.impl.fs.Entry
 
 class LocalWalker(val fs:FS=Native) extends Serializable {
 

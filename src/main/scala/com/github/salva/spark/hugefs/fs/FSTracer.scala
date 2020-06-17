@@ -1,6 +1,7 @@
-package com.github.salva.spark.hugefs.fs.impl
+package com.github.salva.spark.hugefs.fs
 
-import com.github.salva.spark.hugefs.fs.{Entry, FS}
+import com.github.salva.spark.hugefs.FS
+import com.github.salva.spark.hugefs.impl.fs.Entry
 
 class FSTracer(val child:FS, dump:String=>Unit=println) extends FS {
 

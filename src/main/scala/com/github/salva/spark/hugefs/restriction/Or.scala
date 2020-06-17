@@ -1,7 +1,7 @@
 package com.github.salva.spark.hugefs.restriction
 
+import com.github.salva.spark.hugefs.impl.fs.Entry
 import com.github.salva.spark.hugefs.{Restriction, Verdict}
-import com.github.salva.spark.hugefs.fs.Entry
 
 class Or(val a:Restriction, val b:Restriction) extends Restriction {
   override def evaluateCheap(path:String):Verdict = {

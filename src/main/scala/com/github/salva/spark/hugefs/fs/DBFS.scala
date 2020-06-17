@@ -1,15 +1,13 @@
-package com.github.salva.spark.hugefs.fs.impl
+package com.github.salva.spark.hugefs.fs
 
 import com.databricks.backend.daemon.dbutils.FileInfo
 import com.databricks.dbutils_v1.DbfsUtils
-import com.github.salva.spark.hugefs.fs.{Entry, FS}
+import com.github.salva.spark.hugefs.FS
+import com.github.salva.spark.hugefs.impl.fs.Entry
 
 import scala.language.implicitConversions
 
 class DBFS(val fs:DbfsUtils) extends FS {
-
-  implicit def fromDbfsUtils(fs:DbfsUtils):FS = new DBFS(fs)
-
   case class DBFSEntry(absPath:String, path:String) extends Entry {
     def isDir = absPath.endsWith("/")
     def isFile = !isDir

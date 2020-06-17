@@ -1,6 +1,6 @@
 package com.github.salva.spark.hugefs
 
-import com.github.salva.spark.hugefs.fs.Entry
+import com.github.salva.spark.hugefs.impl.fs.Entry
 
 final case class Verdict(good:Boolean, live:Boolean) {
   def ||(other:Verdict) = new Verdict(good || other.good, live || other.live)

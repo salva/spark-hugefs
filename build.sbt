@@ -2,7 +2,7 @@ name := "spark-hugefs"
 
 // logLevel := Level.Debug
 
-version := "0.9"
+version := "0.10"
 
 scalaVersion := "2.11.12"
 

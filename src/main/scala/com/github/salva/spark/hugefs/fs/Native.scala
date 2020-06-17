@@ -1,9 +1,10 @@
-package com.github.salva.spark.hugefs.fs.impl
+package com.github.salva.spark.hugefs.fs
 
 import java.io.IOException
-import java.nio.file.{DirectoryIteratorException, FileSystemException, Files, Path, Paths}
+import java.nio.file._
 
-import com.github.salva.spark.hugefs.fs.{Entry, FS}
+import com.github.salva.spark.hugefs.FS
+import com.github.salva.spark.hugefs.impl.fs.Entry
 
 import scala.collection.JavaConverters._
 

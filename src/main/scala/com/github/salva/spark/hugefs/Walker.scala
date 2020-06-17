@@ -2,11 +2,14 @@ package com.github.salva.spark.hugefs
 
 import java.io.IOException
 
-import com.github.salva.spark.hugefs.fs.impl.Native
-import com.github.salva.spark.hugefs.fs.{Entry, FS}
+import com.databricks.dbutils_v1.DbfsUtils
+import com.github.salva.spark.hugefs.fs.{DBFS, Native}
+import com.github.salva.spark.hugefs.impl.fs.Entry
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
-
 import org.slf4j.LoggerFactory
+
+import scala.language.implicitConversions
+
 class Walker(val spark:SparkSession, val fs:FS=Native) {
   def walk(base:String, restriction:Restriction=Good, ignoreErrors:Boolean=true): DataFrame = {
     import spark.implicits._
@@ -62,4 +65,6 @@ object Walker extends Serializable {
     if (live.isEmpty) good
     else good.union(expand(fs, base, live.repartition(100), restriction, ignoreErrors))
   }
+
+  implicit def fromDbfsUtilsToFS(fs:DbfsUtils):FS = new DBFS(fs)
 }
