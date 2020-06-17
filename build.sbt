@@ -2,7 +2,7 @@ name := "spark-hugefs"
 
 // logLevel := Level.Debug
 
-version := "0.8"
+version := "0.9"
 
 scalaVersion := "2.11.12"
 
@@ -39,6 +39,13 @@ publishTo := {
   val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
+
+assemblyExcludedJars in assembly := {
+  val exclusions = Seq("sourcecode_", "scala-library-",  "dbutils-", "cats-")
+  (fullClasspath in assembly)
+    .value
+    .filter(dep => exclusions.exists(ex => dep.data.getName.startsWith(ex)))
 }
 
 publishMavenStyle := true

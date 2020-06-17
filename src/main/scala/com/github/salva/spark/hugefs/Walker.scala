@@ -62,11 +62,4 @@ object Walker extends Serializable with WalkerHelper {
     if (live.isEmpty) good
     else good.union(expand(fs, base, live.repartition(100), restriction, ignoreErrors))
   }
-
-  def walk(spark:SparkSession, fullBase:String, restriction:Restriction=Good) = {
-    val (fs, base) = breakFullBase(fullBase)
-    val walker = new Walker(spark)
-    walker.walk(base, restriction)
-  }
-
 }

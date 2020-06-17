@@ -1,11 +1,10 @@
 package com.github.salva.spark.hugefs.fs.impl
 
 import com.databricks.backend.daemon.dbutils.FileInfo
+import com.databricks.dbutils_v1.DbfsUtils
 import com.github.salva.spark.hugefs.fs.{Entry, FS}
 
-class DBFS extends FS {
-
-  lazy val fs = com.databricks.dbutils_v1.DBUtilsHolder.dbutils.fs
+class DBFS(val fs:DbfsUtils) extends FS {
 
   case class DBFSEntry(absPath:String, path:String) extends Entry {
     def isDir = absPath.endsWith("/")
@@ -14,7 +13,8 @@ class DBFS extends FS {
     def ls:Seq[Entry] = fs.ls(absPath).map(makeSon(_))
 
     def makeSon(fi:FileInfo):DBFSEntry = {
-      DBFSEntry(fi.path, if (path == "") fi.name else path + "/" + fi.name)
+      val sonName = if (fi.name.endsWith("/")) fi.name.substring(0, fi.name.length - 1) else fi.name
+      DBFSEntry(fi.path, if (path == "") sonName else path + "/" + sonName)
     }
   }
 
