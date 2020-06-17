@@ -1,6 +1,6 @@
 name := "spark-hugefs"
 
-version := "0.12"
+version := "0.13"
 
 scalaVersion := "2.11.12"
 sparkComponents += "sql"
