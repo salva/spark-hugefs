@@ -4,7 +4,11 @@ import com.databricks.backend.daemon.dbutils.FileInfo
 import com.databricks.dbutils_v1.DbfsUtils
 import com.github.salva.spark.hugefs.fs.{Entry, FS}
 
+import scala.language.implicitConversions
+
 class DBFS(val fs:DbfsUtils) extends FS {
+
+  implicit def fromDbfsUtils(fs:DbfsUtils):FS = new DBFS(fs)
 
   case class DBFSEntry(absPath:String, path:String) extends Entry {
     def isDir = absPath.endsWith("/")

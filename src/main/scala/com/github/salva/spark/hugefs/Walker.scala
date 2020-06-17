@@ -16,7 +16,7 @@ class Walker(val spark:SparkSession, val fs:FS=Native) {
   }
 }
 
-object Walker extends Serializable with WalkerHelper {
+object Walker extends Serializable {
 
   lazy val logger = LoggerFactory.getLogger("com.github.salva.spark.hugefs")
 
