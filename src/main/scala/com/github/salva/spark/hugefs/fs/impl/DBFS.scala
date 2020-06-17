@@ -11,7 +11,7 @@ class DBFS extends FS {
     def isDir = absPath.endsWith("/")
     def isFile = !isDir
     def isSymLink = false
-    def ls = fs.ls(absPath).map(makeSon(_))
+    def ls:Seq[Entry] = fs.ls(absPath).map(makeSon(_))
 
     def makeSon(fi:FileInfo):DBFSEntry = {
       DBFSEntry(fi.path, if (path == "") fi.name else path + "/" + fi.name)
@@ -23,9 +23,9 @@ class DBFS extends FS {
   }
 
   override def cleanBase(base: String): String = {
-    val uriBreaker = """(?:dbfs:)?/*(.*)""".r
+    val uriBreaker = """(?:dbfs:)?(.*?)/*""".r
     base match {
-      case uriBreaker(filePath) => "dbfs:/" + filePath
+      case uriBreaker(filePath) => "dbfs:" + filePath
       case _ => throw new IllegalArgumentException("Bad path")
     }
   }
