@@ -1,11 +1,8 @@
 name := "spark-hugefs"
 
-// logLevel := Level.Debug
-
-version := "0.11"
+version := "0.12"
 
 scalaVersion := "2.11.12"
-
 sparkComponents += "sql"
 sparkVersion := "2.4.5"
 
