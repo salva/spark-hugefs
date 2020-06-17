@@ -21,4 +21,12 @@ class DBFS extends FS {
   override def pathToEntry(base: String, path: String): Entry = {
     DBFSEntry(base + "/" + path, path)
   }
+
+  override def cleanBase(base: String): String = {
+    val uriBreaker = """(?:dbfs:)?/*(.*)""".r
+    base match {
+      case uriBreaker(filePath) => "dbfs:/" + filePath
+      case _ => throw new IllegalArgumentException("Bad path")
+    }
+  }
 }

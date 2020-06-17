@@ -11,6 +11,5 @@ trait Entry {
 trait FS extends Serializable {
   def pathToEntry(base:String, path:String):Entry
   def cleanBase(base:String):String = base
-
 }
 
