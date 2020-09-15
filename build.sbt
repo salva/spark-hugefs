@@ -1,12 +1,14 @@
 name := "spark-hugefs"
 
-version := "0.13"
+version := "0.14"
 
-scalaVersion := "2.11.12"
+scalaVersion := "2.12.12"
 sparkComponents += "sql"
-sparkVersion := "2.4.5"
+sparkVersion := "3.0.1"
 
-libraryDependencies += "com.databricks" %% "dbutils-api" % "0.0.4"
+// crossScalaVersions := List("2.11.12", "2.12.11", "2.13.2")
+
+//libraryDependencies += "com.databricks" %% "dbutils-api" % "0.0.4"
 libraryDependencies += "com.github.salva" %% "scala-glob" % "0.0.3"
 
 organization := "com.github.salva"
